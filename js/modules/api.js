@@ -21,7 +21,7 @@ async function get_products() {
         const response = await fetch(`${API_URL}/api/productos`);
         
         if (!response.ok) {
-            console.warn(`Respuesta no OK al obtener productos: ${response.status} ${response.statusText}`);
+            console.log(`Respuesta no OK al obtener productos: ${response.status} ${response.statusText}`);
             console.log('Usando Mock API para productos...');
             return await mockGetProducts();
         }
