@@ -23,16 +23,19 @@ async function get_products() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            mode: 'cors'
+            mode: 'cors',
+            credentials: 'omit'
         });
         
         if (!response.ok) {
-            throw new Error(`Error al obtener productos: ${response.statusText}`);
+            console.warn(`Respuesta no OK al obtener productos: ${response.status} ${response.statusText}`);
+            return [];
         }
         
-        return await response.json();
+        const data = await response.json();
+        return Array.isArray(data) ? data : [];
     } catch (error) {
-        console.error('Error en get_products:', error);
+        console.error('Error en get_products (CORS o conexión):', error.message);
         // Retornar array vacío en caso de error
         return [];
     }
@@ -49,16 +52,19 @@ async function get_categories() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            mode: 'cors'
+            mode: 'cors',
+            credentials: 'omit'
         });
         
         if (!response.ok) {
-            throw new Error(`Error al obtener categorías: ${response.statusText}`);
+            console.warn(`Respuesta no OK al obtener categorías: ${response.status} ${response.statusText}`);
+            return DEFAULT_CATEGORIES;
         }
         
-        return await response.json();
+        const data = await response.json();
+        return Array.isArray(data) ? data : DEFAULT_CATEGORIES;
     } catch (error) {
-        console.error('Error en get_categories (usando categorías por defecto):', error);
+        console.error('Error en get_categories (usando categorías por defecto):', error.message);
         // Retornar categorías por defecto en caso de error CORS
         return DEFAULT_CATEGORIES;
     }
