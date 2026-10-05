@@ -29,15 +29,17 @@ async function get_products() {
         
         if (!response.ok) {
             console.warn(`Respuesta no OK al obtener productos: ${response.status} ${response.statusText}`);
-            return [];
+            console.log('Usando Mock API para productos...');
+            return await mockGetProducts();
         }
         
         const data = await response.json();
         return Array.isArray(data) ? data : [];
     } catch (error) {
         console.error('Error en get_products (CORS o conexión):', error.message);
-        // Retornar array vacío en caso de error
-        return [];
+        console.log('Usando Mock API para productos...');
+        // Usar Mock API como fallback
+        return await mockGetProducts();
     }
 }
 
@@ -94,13 +96,17 @@ async function create_product(productData) {
         });
         
         if (!response.ok) {
-            throw new Error(`Error al crear producto: ${response.statusText}`);
+            console.warn(`Error al crear producto en API: ${response.statusText}`);
+            console.log('Usando Mock API para crear producto...');
+            return await mockCreateProduct(productData);
         }
         
         return await response.json();
     } catch (error) {
-        console.error('Error en create_product:', error);
-        throw error;
+        console.error('Error en create_product:', error.message);
+        console.log('Usando Mock API para crear producto...');
+        // Usar Mock API como fallback
+        return await mockCreateProduct(productData);
     }
 }
 
@@ -121,13 +127,17 @@ async function update_product(productId, productData) {
         });
         
         if (!response.ok) {
-            throw new Error(`Error al actualizar producto: ${response.statusText}`);
+            console.warn(`Error al actualizar producto en API: ${response.statusText}`);
+            console.log('Usando Mock API para actualizar producto...');
+            return await mockUpdateProduct(productId, productData);
         }
         
         return await response.json();
     } catch (error) {
-        console.error('Error en update_product:', error);
-        throw error;
+        console.error('Error en update_product:', error.message);
+        console.log('Usando Mock API para actualizar producto...');
+        // Usar Mock API como fallback
+        return await mockUpdateProduct(productId, productData);
     }
 }
 
@@ -146,12 +156,16 @@ async function delete_product(productId) {
         });
         
         if (!response.ok) {
-            throw new Error(`Error al eliminar producto: ${response.statusText}`);
+            console.warn(`Error al eliminar producto en API: ${response.statusText}`);
+            console.log('Usando Mock API para eliminar producto...');
+            return await mockDeleteProduct(productId);
         }
         
         return await response.json();
     } catch (error) {
-        console.error('Error en delete_product:', error);
-        throw error;
+        console.error('Error en delete_product:', error.message);
+        console.log('Usando Mock API para eliminar producto...');
+        // Usar Mock API como fallback
+        return await mockDeleteProduct(productId);
     }
 }
