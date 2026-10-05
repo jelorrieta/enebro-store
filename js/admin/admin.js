@@ -11,8 +11,8 @@ let productoEnEdicion = null;
 async function inicializarAdmin() {
     try {
         // Cargar categorías y productos
-        await productManager.cargarCategorias();
-        await productManager.cargarProductos();
+        const categorias = await productManager.cargarCategorias();
+        const productos = await productManager.cargarProductos();
 
         // Configurar event listeners
         configurarEventListeners();
@@ -23,10 +23,15 @@ async function inicializarAdmin() {
         // Mostrar productos
         mostrarProductos();
 
+        // Mostrar advertencia si no hay conexión a API
+        if (categorias.length === 0 || productos.length === 0) {
+            mostrarAdvertencia('Nota: Trabajando sin conexión a la API. Algunos datos pueden no estar disponibles.');
+        }
+
         console.log('Administrador inicializado correctamente');
     } catch (error) {
         console.error('Error al inicializar administrador:', error);
-        mostrarError('Error al cargar la aplicación');
+        mostrarAdvertencia('Advertencia: Algunos datos pueden no estar disponibles. Verifica tu conexión a internet.');
     }
 }
 
@@ -296,6 +301,20 @@ function mostrarExito(mensaje) {
     setTimeout(() => {
         alerta.remove();
     }, 5000);
+}
+
+/**
+ * Muestra un mensaje de advertencia
+ */
+function mostrarAdvertencia(mensaje) {
+    const alerta = document.createElement('div');
+    alerta.className = 'alerta alerta-warning';
+    alerta.textContent = mensaje;
+    document.body.insertBefore(alerta, document.body.firstChild);
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 7000);
 }
 
 // Inicializar cuando el DOM esté listo

@@ -20,7 +20,10 @@ class ProductManager {
             return this.productos;
         } catch (error) {
             console.error('Error al cargar productos:', error);
-            throw error;
+            // Retornar array vacío en lugar de lanzar error
+            this.productos = [];
+            this.productosFiltrados = [];
+            return [];
         }
     }
 
@@ -33,7 +36,9 @@ class ProductManager {
             return this.categorias;
         } catch (error) {
             console.error('Error al cargar categorías:', error);
-            throw error;
+            // Las categorías por defecto se retornan desde api.js
+            this.categorias = [];
+            return [];
         }
     }
 

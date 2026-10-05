@@ -8,15 +8,20 @@
 async function inicializarTienda() {
     try {
         // Cargar productos
-        await productManager.cargarProductos();
+        const productos = await productManager.cargarProductos();
 
         // Mostrar productos
         mostrarProductos();
 
+        // Mostrar advertencia si no hay productos
+        if (productos.length === 0) {
+            mostrarAdvertencia('No hay productos disponibles en este momento.');
+        }
+
         console.log('Tienda inicializada correctamente');
     } catch (error) {
         console.error('Error al inicializar tienda:', error);
-        mostrarError('Error al cargar los productos');
+        mostrarAdvertencia('Error al cargar los productos. Verifica tu conexión a internet.');
     }
 }
 
@@ -67,6 +72,20 @@ function mostrarError(mensaje) {
     setTimeout(() => {
         alerta.remove();
     }, 5000);
+}
+
+/**
+ * Muestra un mensaje de advertencia
+ */
+function mostrarAdvertencia(mensaje) {
+    const alerta = document.createElement('div');
+    alerta.className = 'alerta alerta-warning';
+    alerta.textContent = mensaje;
+    document.body.insertBefore(alerta, document.body.firstChild);
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 7000);
 }
 
 // Inicializar cuando el DOM esté listo

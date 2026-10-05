@@ -4,13 +4,27 @@
 
 const API_URL = 'https://enebro-api.vercel.app';
 
+// Categorías por defecto en caso de error de CORS
+const DEFAULT_CATEGORIES = [
+    { id: '1', name: 'Velas' },
+    { id: '2', name: 'Difusores' },
+    { id: '3', name: 'Aromatizantes' },
+    { id: '4', name: 'Accesorios' }
+];
+
 /**
  * Obtiene la lista de productos
  * @returns {Promise<Array>} Lista de productos
  */
 async function get_products() {
     try {
-        const response = await fetch(`${API_URL}/api/productos`);
+        const response = await fetch(`${API_URL}/api/productos`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors'
+        });
         
         if (!response.ok) {
             throw new Error(`Error al obtener productos: ${response.statusText}`);
@@ -19,7 +33,8 @@ async function get_products() {
         return await response.json();
     } catch (error) {
         console.error('Error en get_products:', error);
-        throw error;
+        // Retornar array vacío en caso de error
+        return [];
     }
 }
 
@@ -29,7 +44,13 @@ async function get_products() {
  */
 async function get_categories() {
     try {
-        const response = await fetch(`${API_URL}/api/categorias`);
+        const response = await fetch(`${API_URL}/api/categorias`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            mode: 'cors'
+        });
         
         if (!response.ok) {
             throw new Error(`Error al obtener categorías: ${response.statusText}`);
@@ -37,8 +58,9 @@ async function get_categories() {
         
         return await response.json();
     } catch (error) {
-        console.error('Error en get_categories:', error);
-        throw error;
+        console.error('Error en get_categories (usando categorías por defecto):', error);
+        // Retornar categorías por defecto en caso de error CORS
+        return DEFAULT_CATEGORIES;
     }
 }
 
