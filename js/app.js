@@ -1,32 +1,73 @@
-const API_URL = 'https://enebro-api.vercel.app';
+/**
+ * Script principal de la Tienda
+ */
 
-async function cargarProductos() {
-    const response = await fetch(`${API_URL}/api/productos`);
-
-    if (!response.ok) {
-        throw new Error('No se pudieron cargar los productos');
-    }
-
-    return await response.json();
-}
-
-async function mostrarProductos() {
+/**
+ * Inicializa la tienda
+ */
+async function inicializarTienda() {
     try {
-        const productos = await cargarProductos();
+        // Cargar productos
+        await productManager.cargarProductos();
 
-        const contenedor = document.getElementById('productos');
+        // Mostrar productos
+        mostrarProductos();
 
-        contenedor.innerHTML = productos.map(producto => `
-            <article class="producto">
-                <h2>${producto.name}</h2>
-                <p>${producto.description ?? ''}</p>
-                <p>$${producto.price}</p>
-            </article>
-        `).join('');
-
+        console.log('Tienda inicializada correctamente');
     } catch (error) {
-        console.error(error);
+        console.error('Error al inicializar tienda:', error);
+        mostrarError('Error al cargar los productos');
     }
 }
 
-mostrarProductos();
+/**
+ * Muestra los productos en la tienda
+ */
+function mostrarProductos() {
+    const contenedor = document.getElementById('productos');
+    const productos = productManager.obtenerTodosProductos();
+
+    if (productos.length === 0) {
+        contenedor.innerHTML = '<p class="sin-productos">No hay productos disponibles</p>';
+        return;
+    }
+
+    contenedor.innerHTML = productos.map(producto => `
+        <article class="producto">
+            <img src="${producto.imgsrc || 'https://via.placeholder.com/250'}" alt="${producto.name}" class="producto-imagen">
+            <h2>${producto.name}</h2>
+            <p class="producto-descripcion">${producto.description ?? ''}</p>
+            <div class="producto-info">
+                <span class="producto-precio">$${parseFloat(producto.price).toFixed(2)}</span>
+                ${producto.sku ? `<span class="producto-sku">SKU: ${producto.sku}</span>` : ''}
+            </div>
+            ${producto.aroma && producto.aroma.length > 0 ? `
+                <div class="producto-aromas">
+                    <strong>Aromas:</strong> ${producto.aroma.join(', ')}
+                </div>
+            ` : ''}
+            ${producto.color && producto.color.length > 0 ? `
+                <div class="producto-colores">
+                    <strong>Colores:</strong> ${producto.color.join(', ')}
+                </div>
+            ` : ''}
+        </article>
+    `).join('');
+}
+
+/**
+ * Muestra un mensaje de error
+ */
+function mostrarError(mensaje) {
+    const alerta = document.createElement('div');
+    alerta.className = 'alerta alerta-error';
+    alerta.textContent = mensaje;
+    document.body.insertBefore(alerta, document.body.firstChild);
+
+    setTimeout(() => {
+        alerta.remove();
+    }, 5000);
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', inicializarTienda);
