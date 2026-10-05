@@ -18,11 +18,7 @@ const DEFAULT_CATEGORIES = [
  */
 async function get_products() {
     try {
-        const response = await fetch(`${API_URL}/api/productos`, {
-            method: 'GET',
-            mode: 'cors',
-            credentials: 'omit'
-        });
+        const response = await fetch(`${API_URL}/api/productos`);
         
         if (!response.ok) {
             console.warn(`Respuesta no OK al obtener productos: ${response.status} ${response.statusText}`);
