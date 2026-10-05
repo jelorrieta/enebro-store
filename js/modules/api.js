@@ -20,9 +20,6 @@ async function get_products() {
     try {
         const response = await fetch(`${API_URL}/api/productos`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             mode: 'cors',
             credentials: 'omit'
         });
@@ -51,9 +48,6 @@ async function get_categories() {
     try {
         const response = await fetch(`${API_URL}/api/categorias`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             mode: 'cors',
             credentials: 'omit'
         });
