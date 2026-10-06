@@ -255,9 +255,7 @@ async function manejarActualizarProducto(e, productId) {
         btnSubmit.textContent = 'Crear Producto';
         btnSubmit.onclick = null;
 
-        // Mostrar productos actualizados sin refrescar desde la API
-        // ya que el producto ya fue actualizado en el array local
-        mostrarProductos();
+        await refrescarProductos();
 
         // Mostrar mensaje de éxito
         mostrarExito('Producto actualizado correctamente');
