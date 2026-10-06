@@ -132,7 +132,7 @@ async function delete_product(productId) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(productId)
+            body: JSON.stringify({ p_id: productId })
         });
         
         if (!response.ok) {
