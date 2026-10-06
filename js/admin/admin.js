@@ -117,16 +117,16 @@ async function manejarCrearProducto(e) {
         }
 
         // Crear producto
-        await productManager.crearProducto(datos);
+         await productManager.crearProducto(datos);
 
-        // Limpiar formulario
-        document.getElementById('formCrearProducto').reset();
+         // Limpiar formulario
+         document.getElementById('formCrearProducto').reset();
 
-        // Actualizar lista
-        mostrarProductos();
+         // Refrescar listado desde la API
+         await refrescarProductos();
 
-        // Mostrar mensaje de éxito
-        mostrarExito('Producto creado correctamente');
+         // Mostrar mensaje de éxito
+         mostrarExito('Producto creado correctamente');
     } catch (error) {
         console.error('Error al crear producto:', error);
         mostrarError('Error al crear el producto');
@@ -315,6 +315,22 @@ function mostrarAdvertencia(mensaje) {
     setTimeout(() => {
         alerta.remove();
     }, 7000);
+}
+
+/**
+ * Refresca el listado de productos desde la API
+ */
+async function refrescarProductos() {
+    try {
+        // Recargar productos desde la API
+        await productManager.cargarProductos();
+        
+        // Mostrar productos actualizados
+        mostrarProductos();
+    } catch (error) {
+        console.error('Error al refrescar productos:', error);
+        mostrarError('Error al refrescar el listado de productos');
+    }
 }
 
 // Inicializar cuando el DOM esté listo
