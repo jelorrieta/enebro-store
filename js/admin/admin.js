@@ -255,8 +255,9 @@ async function manejarActualizarProducto(e, productId) {
         btnSubmit.textContent = 'Crear Producto';
         btnSubmit.onclick = null;
 
-        // Refrescar listado desde la API
-        await refrescarProductos();
+        // Mostrar productos actualizados sin refrescar desde la API
+        // ya que el producto ya fue actualizado en el array local
+        mostrarProductos();
 
         // Mostrar mensaje de éxito
         mostrarExito('Producto actualizado correctamente');
@@ -331,11 +332,30 @@ function mostrarAdvertencia(mensaje) {
  */
 async function refrescarProductos() {
     try {
+        console.log('Iniciando refresh de productos...');
+        
         // Recargar productos desde la API
-        await productManager.cargarProductos();
+        const productosActualizados = await productManager.cargarProductos();
+        console.log('Productos cargados:', productosActualizados);
+        
+        // Limpiar filtros para mostrar todos los productos
+        const inputBuscar = document.getElementById('buscar');
+        const selectCategoria = document.getElementById('filtroCategoria');
+        
+        if (inputBuscar) {
+            inputBuscar.value = '';
+        }
+        if (selectCategoria) {
+            selectCategoria.value = '';
+        }
+        
+        // Resetear filtros en el manager
+        productManager.filtrarPorBusqueda('');
+        productManager.filtrarPorCategoria('');
         
         // Mostrar productos actualizados
         mostrarProductos();
+        console.log('Productos mostrados en la tabla');
     } catch (error) {
         console.error('Error al refrescar productos:', error);
         mostrarError('Error al refrescar el listado de productos');
