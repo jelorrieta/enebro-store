@@ -131,7 +131,8 @@ async function delete_product(productId) {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify(productId)
         });
         
         if (!response.ok) {
