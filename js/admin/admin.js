@@ -255,8 +255,8 @@ async function manejarActualizarProducto(e, productId) {
         btnSubmit.textContent = 'Crear Producto';
         btnSubmit.onclick = null;
 
-        // Actualizar lista
-        mostrarProductos();
+        // Refrescar listado desde la API
+        await refrescarProductos();
 
         // Mostrar mensaje de éxito
         mostrarExito('Producto actualizado correctamente');
