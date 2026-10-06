@@ -158,19 +158,28 @@ function mostrarProductos() {
                 </tr>
             </thead>
             <tbody>
-                ${productos.map(producto => `
-                    <tr class="producto-fila" data-id="${producto.id}">
-                        <td class="producto-nombre">${producto.name}</td>
-                        <td class="producto-descripcion">${producto.description ? producto.description.substring(0, 50) + '...' : '-'}</td>
-                        <td class="producto-categoria">${productManager.obtenerNombreCategoria(producto.category_id)}</td>
-                        <td class="producto-precio">$${parseFloat(producto.price).toFixed(2)}</td>
-                        <td class="producto-sku">${producto.sku || '-'}</td>
-                        <td class="producto-acciones">
-                            <button class="btn btn-small btn-edit" onclick="editarProducto('${producto.id}')">Editar</button>
-                            <button class="btn btn-small btn-delete" onclick="eliminarProducto('${producto.id}')">Eliminar</button>
-                        </td>
-                    </tr>
-                `).join('')}
+                ${productos.map(producto => {
+                    // Validar y formatear datos
+                    const nombre = producto.name || 'Sin nombre';
+                    const descripcion = producto.description ? producto.description.substring(0, 50) + '...' : '-';
+                    const categoria = productManager.obtenerNombreCategoria(producto.category_id);
+                    const precio = producto.price && !isNaN(parseFloat(producto.price)) ? `$${parseFloat(producto.price).toFixed(2)}` : '$0.00';
+                    const sku = producto.sku || '-';
+                    
+                    return `
+                        <tr class="producto-fila" data-id="${producto.id}">
+                            <td class="producto-nombre">${nombre}</td>
+                            <td class="producto-descripcion">${descripcion}</td>
+                            <td class="producto-categoria">${categoria}</td>
+                            <td class="producto-precio">${precio}</td>
+                            <td class="producto-sku">${sku}</td>
+                            <td class="producto-acciones">
+                                <button class="btn btn-small btn-edit" onclick="editarProducto('${producto.id}')">Editar</button>
+                                <button class="btn btn-small btn-delete" onclick="eliminarProducto('${producto.id}')">Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('')}
             </tbody>
         </table>
     `;
