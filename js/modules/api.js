@@ -101,7 +101,7 @@ async function create_product(productData) {
  */
 async function update_product(productId, productData) {
     try {
-        const response = await fetch(`${API_URL}/api/productos/${productId}`, {
+        const response = await fetch(`${API_URL}/api/productos`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
