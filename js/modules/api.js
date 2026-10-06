@@ -127,7 +127,7 @@ async function update_product(productData) {
  */
 async function delete_product(productId) {
     try {
-        const response = await fetch(`${API_URL}/api/productos/${productId}`, {
+        const response = await fetch(`${API_URL}/api/productos`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
