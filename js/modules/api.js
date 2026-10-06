@@ -99,7 +99,7 @@ async function create_product(productData) {
  * @param {Object} productData - Datos a actualizar
  * @returns {Promise<Object>} Producto actualizado
  */
-async function update_product(productId, productData) {
+async function update_product(productData) {
     try {
         const response = await fetch(`${API_URL}/api/productos`, {
             method: 'PUT',

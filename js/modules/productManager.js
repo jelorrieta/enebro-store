@@ -78,6 +78,7 @@ class ProductManager {
     async actualizarProducto(productId, datos) {
         try {
             const productData = {
+                p_id: productId,
                 p_name: datos.nombre,
                 p_description: datos.descripcion || null,
                 p_imgsrc: datos.imagen || null,
@@ -88,7 +89,7 @@ class ProductManager {
                 p_color: datos.colores ? datos.colores.split(',').map(c => c.trim()) : null
             };
 
-            const productoActualizado = await update_product(productId, productData);
+            const productoActualizado = await update_product(productData);
             
             // Actualizar en el array local
             const index = this.productos.findIndex(p => p.id === productId);
