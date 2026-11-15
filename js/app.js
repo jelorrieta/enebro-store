@@ -44,7 +44,7 @@ function mostrarProductos() {
             <p class="producto-descripcion">${producto.description ?? ''}</p>
             <div class="producto-info">
                 <span class="producto-precio">
-                    $${parseFloat(producto.price).toLocaleString('es-CL', {maximumFractionDigits: 0})}
+                    ${parseFloat(producto.price).toLocaleString('es-CL', {maximumFractionDigits: 0})}
                 </span>
                 ${producto.sku ? `<span class="producto-sku">SKU: ${producto.sku}</span>` : ''}
             </div>
