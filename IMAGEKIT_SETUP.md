@@ -42,13 +42,15 @@ DATABASE_URL=tu_database_url_aqui
 
 ### 3. Actualizar la Configuración en el Frontend
 
-En `js/modules/imageKit.js`, verifica que la configuración sea correcta:
+En `js/modules/imageKit.js`, la configuración ya está actualizada con tus credenciales:
 
 ```javascript
-this.publicKey = '4uoe6xnkb'; // Tu Public Key
-this.urlEndpoint = 'https://ik.imagekit.io/4uoe6xnkb/enebro'; // Tu URL Endpoint
+this.publicKey = 'public_xZ311RwM6rSu1/3yRkykSzXnjsY='; // Tu Public Key
+this.urlEndpoint = 'https://ik.imagekit.io/4uoe6xnkb'; // Tu URL Endpoint
 this.authenticationEndpoint = 'https://enebro-api.vercel.app/api/imagekit-auth'; // Tu API
 ```
+
+**Nota:** El Public Key ya está configurado. Solo necesitas configurar las variables de entorno en la API.
 
 ## 🚀 Uso
 
