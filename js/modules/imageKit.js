@@ -7,7 +7,7 @@ class ImageKitUploader {
     constructor() {
         // Configuración de ImageKit
         this.publicKey = '4uoe6xnkb';
-        this.urlEndpoint = 'https://ik.imagekit.io/4uoe6xnkb/';
+        this.urlEndpoint = 'https://ik.imagekit.io/4uoe6xnkb';
         this.authenticationEndpoint = 'https://enebro-api.vercel.app/api/imagekit-auth';
     }
 
