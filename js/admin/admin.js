@@ -62,6 +62,18 @@ function configurarEventListeners() {
             mostrarProductos();
         });
     }
+
+    // Upload de imagen
+    const btnSubirImagen = document.getElementById('btnSubirImagen');
+    if (btnSubirImagen) {
+        btnSubirImagen.addEventListener('click', manejarSubirImagen);
+    }
+
+    // Preview de imagen al seleccionar archivo
+    const inputImagen = document.getElementById('imagenArchivo');
+    if (inputImagen) {
+        inputImagen.addEventListener('change', mostrarPreviewLocal);
+    }
 }
 
 /**
@@ -358,6 +370,102 @@ async function refrescarProductos() {
         console.error('Error al refrescar productos:', error);
         mostrarError('Error al refrescar el listado de productos');
     }
+}
+
+/**
+ * Maneja el upload de imagen a ImageKit
+ */
+async function manejarSubirImagen() {
+    const inputImagen = document.getElementById('imagenArchivo');
+    const estadoUpload = document.getElementById('estadoUpload');
+    const btnSubir = document.getElementById('btnSubirImagen');
+
+    if (!inputImagen.files || inputImagen.files.length === 0) {
+        mostrarError('Por favor selecciona una imagen');
+        return;
+    }
+
+    const archivo = inputImagen.files[0];
+
+    try {
+        // Mostrar estado de carga
+        estadoUpload.textContent = 'Subiendo...';
+        estadoUpload.className = 'estado-upload cargando';
+        btnSubir.disabled = true;
+
+        // Subir imagen a ImageKit
+        const resultado = await imageKitUploader.subirImagen(archivo);
+
+        // Llenar el campo de URL de imagen con la URL de ImageKit
+        document.getElementById('imagen').value = resultado.url;
+
+        // Mostrar estado de éxito
+        estadoUpload.textContent = '✓ Imagen subida correctamente';
+        estadoUpload.className = 'estado-upload exito';
+
+        // Mostrar preview de la imagen subida
+        mostrarPreviewImagen(resultado.url);
+
+        // Limpiar input de archivo después de 2 segundos
+        setTimeout(() => {
+            inputImagen.value = '';
+            estadoUpload.textContent = '';
+            estadoUpload.className = 'estado-upload';
+            btnSubir.disabled = false;
+        }, 2000);
+
+        mostrarExito('Imagen subida a ImageKit correctamente');
+    } catch (error) {
+        console.error('Error al subir imagen:', error);
+        estadoUpload.textContent = '✗ Error al subir imagen';
+        estadoUpload.className = 'estado-upload error';
+        btnSubir.disabled = false;
+        mostrarError(`Error: ${error.message}`);
+    }
+}
+
+/**
+ * Muestra un preview local de la imagen seleccionada
+ */
+function mostrarPreviewLocal(e) {
+    const archivo = e.target.files[0];
+    
+    if (!archivo) {
+        return;
+    }
+
+    // Validar que sea una imagen
+    if (!archivo.type.startsWith('image/')) {
+        mostrarError('El archivo debe ser una imagen');
+        e.target.value = '';
+        return;
+    }
+
+    // Crear URL local para preview
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        mostrarPreviewImagen(event.target.result);
+    };
+    reader.readAsDataURL(archivo);
+}
+
+/**
+ * Muestra el preview de la imagen
+ */
+function mostrarPreviewImagen(urlImagen) {
+    const previewContainer = document.getElementById('previewImagen');
+    
+    if (!urlImagen) {
+        previewContainer.innerHTML = '';
+        return;
+    }
+
+    previewContainer.innerHTML = `
+        <div class="preview-contenedor">
+            <img src="${urlImagen}" alt="Preview de imagen" class="preview-img">
+            <p class="preview-texto">Preview de la imagen</p>
+        </div>
+    `;
 }
 
 // Inicializar cuando el DOM esté listo

@@ -57,6 +57,16 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="imagenArchivo">Subir Imagen a ImageKit</label>
+                        <div class="upload-container">
+                            <input type="file" id="imagenArchivo" name="imagenArchivo" accept="image/*" class="input-archivo">
+                            <button type="button" id="btnSubirImagen" class="btn btn-secondary">Subir Imagen</button>
+                            <span id="estadoUpload" class="estado-upload"></span>
+                        </div>
+                        <div id="previewImagen" class="preview-imagen"></div>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="aromas">Aromas (separados por coma)</label>
@@ -93,6 +103,7 @@
 
     <script src="../js/modules/api.js"></script>
     <script src="../js/modules/productManager.js"></script>
+    <script src="../js/modules/imageKit.js"></script>
     <script src="../js/admin/admin.js"></script>
 </body>
 </html>
