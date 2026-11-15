@@ -43,7 +43,9 @@ function mostrarProductos() {
             <h2>${producto.name}</h2>
             <p class="producto-descripcion">${producto.description ?? ''}</p>
             <div class="producto-info">
-                <span class="producto-precio">$${parseFloat(producto.price).toFixed(2)}</span>
+                <span class="producto-precio">
+                    $${parseFloat(producto.price).toLocaleString('es-CL', {maximumFractionDigits: 0})}
+                </span>
                 ${producto.sku ? `<span class="producto-sku">SKU: ${producto.sku}</span>` : ''}
             </div>
             ${producto.aroma && producto.aroma.length > 0 ? `
