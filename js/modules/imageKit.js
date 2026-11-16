@@ -62,9 +62,8 @@ class ImageKitUploader {
             formData.append('token', auth.token);
             
             // Usar nombre personalizado si se proporciona
-            if (nombreArchivo) {
-                formData.append('fileName', nombreArchivo);
-            }
+            const nombreFinal = nombreArchivo || archivo.name;
+            formData.append('fileName', nombreFinal);
 
             // Subir a ImageKit
             const response = await fetch('https://upload.imagekit.io/api/v1/files/upload', {
