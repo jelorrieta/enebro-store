@@ -10,6 +10,12 @@ let productoEnEdicion = null;
  */
 async function inicializarAdmin() {
     try {
+        // Verificar autenticación
+        if (!authManager.estaAutenticado()) {
+            window.location.href = 'login.html';
+            return;
+        }
+
         // Cargar categorías y productos
         const categorias = await productManager.cargarCategorias();
         const productos = await productManager.cargarProductos();
@@ -74,7 +80,39 @@ function configurarEventListeners() {
     if (inputImagen) {
         inputImagen.addEventListener('change', mostrarPreviewLocal);
     }
+
+    // Validación en tiempo real de URL de imagen
+    const inputUrlImagen = document.getElementById('imagen');
+    if (inputUrlImagen) {
+        inputUrlImagen.addEventListener('change', validarUrlImagenEnTiempoReal);
+        inputUrlImagen.addEventListener('blur', validarUrlImagenEnTiempoReal);
+    }
 }
+
+/**
+ * Valida la URL de imagen en tiempo real
+ */
+function validarUrlImagenEnTiempoReal(e) {
+    const url = e.target.value;
+    const validacionElement = document.getElementById('imagenValidacion');
+
+    if (!url) {
+        validacionElement.textContent = '';
+        validacionElement.className = 'validacion-imagen';
+        return;
+    }
+
+    const validacion = imageKitUploader.validarUrlImagen(url);
+
+    if (!validacion.valida) {
+        validacionElement.textContent = `❌ ${validacion.mensaje}`;
+        validacionElement.className = 'validacion-imagen error';
+    } else {
+        validacionElement.textContent = '✓ URL válida';
+        validacionElement.className = 'validacion-imagen exito';
+    }
+}
+
 
 /**
  * Llena el select de categorías
@@ -126,6 +164,15 @@ async function manejarCrearProducto(e) {
         if (!datos.nombre || !datos.precio) {
             mostrarError('El nombre y precio son requeridos');
             return;
+        }
+
+        // Validar URL de imagen si está presente
+        if (datos.imagen) {
+            const validacion = imageKitUploader.validarUrlImagen(datos.imagen);
+            if (!validacion.valida) {
+                mostrarError(`URL de imagen inválida: ${validacion.mensaje}`);
+                return;
+            }
         }
 
         // Crear producto

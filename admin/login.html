@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Administrador Enebro</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+        }
+
+        .login-box {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: var(--spacing-2xl);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box h1 {
+            text-align: center;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xl);
+            font-size: 2rem;
+        }
+
+        .login-box .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .login-box label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
+            color: var(--color-dark);
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: var(--spacing-md);
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .login-box button:hover {
+            background-color: #1e4620;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-box button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-lg);
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .login-footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: var(--spacing-lg);
+                margin: var(--spacing-lg);
+            }
+
+            .login-box h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Enebro</h1>
+            
+            <div id="loginError" class="login-error"></div>
+
+            <form id="formLogin">
+                <div class="form-group">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" name="usuario" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" required>
+                </div>
+
+                <button type="submit" id="btnLogin">Iniciar Sesión</button>
+            </form>
+
+            <div class="login-footer">
+                <p>Administrador de Productos</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/modules/auth.js"></script>
+    <script>
+        /**
+         * Maneja el envío del formulario de login
+         */
+        document.getElementById('formLogin').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const usuario = document.getElementById('usuario').value;
+            const contrasena = document.getElementById('contrasena').value;
+            const btnLogin = document.getElementById('btnLogin');
+            const loginError = document.getElementById('loginError');
+
+            try {
+                btnLogin.disabled = true;
+                btnLogin.textContent = 'Iniciando sesión...';
+                loginError.classList.remove('show');
+
+                // Intentar login
+                await authManager.login(usuario, contrasena);
+
+                // Redirigir al administrador
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Error en login:', error);
+                loginError.textContent = error.message || 'Error al iniciar sesión';
+                loginError.classList.add('show');
+                btnLogin.disabled = false;
+                btnLogin.textContent = 'Iniciar Sesión';
+            }
+        });
+
+        // Verificar si ya está autenticado
+        if (authManager.estaAutenticado()) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

@@ -295,6 +295,29 @@
 }
 
 /* ===========================
+    Validación de URL de Imagen
+    =========================== */
+
+.validacion-imagen {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.validacion-imagen.error {
+    color: #f44336;
+}
+
+.validacion-imagen.exito {
+    color: #4caf50;
+}
+
+.validacion-imagen.warning {
+    color: #ff9800;
+}
+
+/* ===========================
     Responsive
     =========================== */
 

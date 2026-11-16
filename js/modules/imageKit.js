@@ -128,6 +128,61 @@ class ImageKitUploader {
         // Agregar parámetros de transformación
         return `${url}?tr=w-${ancho},h-${alto},c-at`;
     }
+
+    /**
+     * Valida que una URL de imagen sea del origen permitido
+     * Solo permite URLs de https://ik.imagekit.io/4uoe6xnkb/
+     * @param {string} url - URL a validar
+     * @returns {Object} { valida: boolean, mensaje: string }
+     */
+    validarUrlImagen(url) {
+        if (!url || typeof url !== 'string') {
+            return {
+                valida: false,
+                mensaje: 'La URL es requerida'
+            };
+        }
+
+        // Validar que sea una URL válida
+        try {
+            new URL(url);
+        } catch (error) {
+            return {
+                valida: false,
+                mensaje: 'La URL no es válida'
+            };
+        }
+
+        // Validar que sea HTTPS
+        if (!url.startsWith('https://')) {
+            return {
+                valida: false,
+                mensaje: 'La URL debe ser HTTPS'
+            };
+        }
+
+        // Validar que sea del origen permitido de ImageKit
+        const origenPermitido = 'https://ik.imagekit.io/4uoe6xnkb/';
+        if (!url.startsWith(origenPermitido)) {
+            return {
+                valida: false,
+                mensaje: `La URL debe ser de ${origenPermitido}`
+            };
+        }
+
+        return {
+            valida: true,
+            mensaje: 'URL válida'
+        };
+    }
+
+    /**
+     * Obtiene el origen permitido de ImageKit
+     * @returns {string} URL base de ImageKit
+     */
+    obtenerOrigenPermitido() {
+        return 'https://ik.imagekit.io/4uoe6xnkb/';
+    }
 }
 
 // Crear instancia global del uploader de ImageKit
