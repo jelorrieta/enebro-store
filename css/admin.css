@@ -25,6 +25,21 @@
 .admin-nav {
     display: flex;
     gap: var(--spacing-lg);
+    align-items: center;
+}
+
+.admin-user-info {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+    padding: 0 var(--spacing-md);
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.usuario-nombre {
+    color: white;
+    font-weight: 500;
+    font-size: 0.95rem;
 }
 
 .admin-nav .btn {

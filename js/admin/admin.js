@@ -16,6 +16,9 @@ async function inicializarAdmin() {
             return;
         }
 
+        // Mostrar información del usuario conectado
+        mostrarUsuarioConectado();
+
         // Cargar categorías y productos
         const categorias = await productManager.cargarCategorias();
         const productos = await productManager.cargarProductos();
@@ -38,6 +41,18 @@ async function inicializarAdmin() {
     } catch (error) {
         console.error('Error al inicializar administrador:', error);
         mostrarAdvertencia('Advertencia: Algunos datos pueden no estar disponibles. Verifica tu conexión a internet.');
+    }
+}
+
+/**
+ * Muestra la información del usuario conectado
+ */
+function mostrarUsuarioConectado() {
+    const usuario = authManager.obtenerUsuario();
+    const usuarioElement = document.getElementById('usuarioConectado');
+    
+    if (usuario && usuarioElement) {
+        usuarioElement.textContent = `👤 ${usuario.nombre}`;
     }
 }
 
@@ -87,7 +102,24 @@ function configurarEventListeners() {
         inputUrlImagen.addEventListener('change', validarUrlImagenEnTiempoReal);
         inputUrlImagen.addEventListener('blur', validarUrlImagenEnTiempoReal);
     }
+
+    // Botón de logout
+    const btnLogout = document.getElementById('btnLogout');
+    if (btnLogout) {
+        btnLogout.addEventListener('click', manejarLogout);
+    }
 }
+
+/**
+ * Maneja el logout del usuario
+ */
+function manejarLogout() {
+    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+        authManager.logout();
+        window.location.href = 'login.html';
+    }
+}
+
 
 /**
  * Valida la URL de imagen en tiempo real
