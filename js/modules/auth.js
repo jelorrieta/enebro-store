@@ -6,6 +6,8 @@
 class AuthManager {
     constructor() {
         this.apiUrl = 'https://enebro-api.vercel.app/api/auth';
+        this.loginUrl = 'https://enebro-api.vercel.app/api/auth/login';
+        this.verificarUrl = 'https://enebro-api.vercel.app/api/auth/verificar';
         this.tokenKey = 'admin_token';
         this.userKey = 'admin_user';
     }
@@ -43,7 +45,7 @@ class AuthManager {
      */
     async login(usuario, contrasena) {
         try {
-            const response = await fetch(`${this.apiUrl}/login`, {
+            const response = await fetch(this.loginUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,7 +92,7 @@ class AuthManager {
             const token = this.obtenerToken();
             if (!token) return false;
 
-            const response = await fetch(`${this.apiUrl}/verificar`, {
+            const response = await fetch(this.verificarUrl, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
